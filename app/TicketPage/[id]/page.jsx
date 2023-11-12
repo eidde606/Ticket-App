@@ -2,7 +2,7 @@ import TicketForm from "@/app/(components)/TicketForm";
 
 const getTicketById = async (id) => {
   const res = await fetch(
-    `https://ticket-appapi-c28d792b52fd.herokuapp.com/api/Tickets/${id}`,
+    `https://ticket-appapi-c28d792b52fd.herokuapp.com/Tickets/${id}`,
     {
       cache: "no-store",
     }
