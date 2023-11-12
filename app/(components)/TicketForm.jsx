@@ -20,14 +20,11 @@ const TicketForm = ({ ticket }) => {
     e.preventDefault();
 
     if (EDITMODE) {
-      const res = await fetch(
-        `https://ticket-appapi-c28d792b52fd.herokuapp.com/api/Tickets/${ticket._id}`,
-        {
-          method: "PUT",
-          body: JSON.stringify({ formData }),
-          "content-type": "application/json",
-        }
-      );
+      const res = await fetch(`/api/Tickets/${ticket._id}`, {
+        method: "PUT",
+        body: JSON.stringify({ formData }),
+        "content-type": "application/json",
+      });
       if (!res.ok) {
         throw new Error("Failed to Update Ticket.");
       }
