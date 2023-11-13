@@ -23,7 +23,7 @@ const TicketForm = ({ ticket }) => {
       const res = await fetch(`/api/Tickets/${ticket._id}`, {
         method: "PUT",
         body: JSON.stringify({ formData }),
-        "content-Type": "application/json",
+        "Content-Type": "application/json",
       });
       if (!res.ok) {
         throw new Error("Failed to Update Ticket.");
@@ -32,7 +32,7 @@ const TicketForm = ({ ticket }) => {
       const res = await fetch("/api/Tickets", {
         method: "POST",
         body: JSON.stringify({ formData }),
-        "content-Type": "application/json",
+        "Content-Type": "application/json",
       });
       if (!res.ok) {
         throw new Error("Failed to create ticket.");
