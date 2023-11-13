@@ -1,9 +1,9 @@
 import TicketCard from "./(components)/TicketCard";
 
-const getTickets = async () => {
+const getTickets = async (id) => {
   try {
     const res = await fetch(
-      "https://api-ticket-54ababcdb63f.herokuapp.com/api/Tickets",
+      `https://api-ticket-54ababcdb63f.herokuapp.com/api/Tickets/${id}`,
       {
         cache: "no-store",
       }
