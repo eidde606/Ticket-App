@@ -1,10 +1,4 @@
-import TicketForm from "@/app/(components)/TicketForm";
-
-const baseUrl = "https://api-ticket-54ababcdb63f.herokuapp.com";
-
-const TicketPage = ({ ticket }) => {
-  return <TicketForm ticket={ticket} />;
-};
+const TicketPage = ({ ticket }) => {};
 
 TicketPage.getInitialProps = async ({ query }) => {
   const { id } = query;
@@ -22,8 +16,8 @@ TicketPage.getInitialProps = async ({ query }) => {
         throw new Error(`Failed to get ticket. Status: ${res.status}`);
       }
 
-      const data = await res.json();
-      updateTicketData = data.foundTicket;
+      updateTicketData = await res.json();
+      updateTicketData = updateTicketData.foundTicket;
     } catch (error) {
       console.error("Error fetching ticket:", error);
       // Handle the error appropriately
