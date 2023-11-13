@@ -19,27 +19,43 @@ const TicketForm = ({ ticket }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (EDITMODE) {
-      const res = await fetch(`/api/Tickets/${ticket._id}`, {
-        method: "PUT",
-        body: JSON.stringify({ formData }),
-        "Content-Type": "application/json",
-      });
-      if (!res.ok) {
-        throw new Error("Failed to Update Ticket.");
+    try {
+      if (EDITMODE) {
+        const res = await fetch(`/api/Tickets/${ticket._id}`, {
+          method: "PUT",
+          body: JSON.stringify({ formData }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error(
+            `Failed to update ticket. Server response: ${res.status} - ${res.statusText}`
+          );
+        }
+      } else {
+        const res = await fetch("/api/Tickets", {
+          method: "POST",
+          body: JSON.stringify({ formData }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error(
+            `Failed to create ticket. Server response: ${res.status} - ${res.statusText}`
+          );
+        }
       }
-    } else {
-      const res = await fetch("/api/Tickets", {
-        method: "POST",
-        body: JSON.stringify({ formData }),
-        "Content-Type": "application/json",
-      });
-      if (!res.ok) {
-        throw new Error("Failed to create ticket.");
-      }
+
+      router.refresh();
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+      // Handle the error, show a user-friendly message, or log it as needed
     }
-    router.refresh();
-    router.push("/");
   };
 
   const startingTicketData = {
