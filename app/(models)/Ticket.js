@@ -1,16 +1,9 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-// Retrieve the MongoDB URI from the environment variable
-const MONGODB_URI = process.env.MONGODB_URI;
-
-// Connect to MongoDB
-mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(process.env.MONGODB_URI);
 mongoose.Promise = global.Promise;
 
-const ticketSchema = new mongoose.Schema(
+const ticketSchema = new Schema(
   {
     title: String,
     description: String,
