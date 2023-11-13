@@ -1,21 +1,23 @@
 import TicketCard from "./(components)/TicketCard";
-
-const getTickets = async (id) => {
+const getTickets = async () => {
   try {
     const res = await fetch(
-      `https://api-ticket-54ababcdb63f.herokuapp.com/api/Tickets/${id}`,
+      `https://api-ticket-54ababcdb63f.herokuapp.com/api/Tickets/`,
       {
         cache: "no-store",
       }
     );
 
     if (!res.ok) {
-      throw new Error("Failed to fetch topics");
+      throw new Error(`Failed to fetch tickets. Status: ${res.status}`);
     }
 
-    return res.json();
+    const data = await res.json();
+    console.log("Fetched tickets:", data);
+
+    return data;
   } catch (error) {
-    console.log("Error loading topics: ", error);
+    console.log("Error fetching tickets:", error);
   }
 };
 
