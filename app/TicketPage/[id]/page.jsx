@@ -1,32 +1,36 @@
 import TicketForm from "@/app/(components)/TicketForm";
 
 const baseUrl = "https://api-ticket-54ababcdb63f.herokuapp.com";
-const getTicketById = async (id) => {
-  const res = await fetch(`${baseUrl}/api/Tickets/${id}`, {
-    cache: "no-store",
-  });
 
-  if (!res.ok) {
-    throw new Error("Failed to get ticket.");
-  }
-
-  return res.json();
+const TicketPage = ({ ticket }) => {
+  return <TicketForm ticket={ticket} />;
 };
 
-const TicketPage = async ({ params }) => {
-  const EDITMODE = params.id === "new" ? false : true;
+TicketPage.getInitialProps = async ({ query }) => {
+  const { id } = query;
+  const EDITMODE = id !== "new";
 
   let updateTicketData = {};
 
   if (EDITMODE) {
-    updateTicketData = await getTicketById(params.id);
-    updateTicketData = updateTicketData.foundTicket;
-  } else {
-    updateTicketData = {
-      _id: "new",
-    };
+    try {
+      const res = await fetch(`${baseUrl}/api/Tickets/${id}`, {
+        cache: "no-store",
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to get ticket. Status: ${res.status}`);
+      }
+
+      const data = await res.json();
+      updateTicketData = data.foundTicket;
+    } catch (error) {
+      console.error("Error fetching ticket:", error);
+      // Handle the error appropriately
+    }
   }
-  return <TicketForm ticket={updateTicketData} />;
+
+  return { ticket: updateTicketData };
 };
 
 export default TicketPage;
