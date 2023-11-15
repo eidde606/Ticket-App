@@ -1,12 +1,9 @@
 import TicketForm from "@/app/(components)/TicketForm";
 
 const getTicketById = async (id) => {
-  const res = await fetch(
-    `https://api-ticket-54ababcdb63f.herokuapp.com/api/Tickets/${id}`,
-    {
-      cache: "no-store",
-    }
-  );
+  const res = await fetch(`${process.env.BASE_URL}${id}`, {
+    cache: "no-store",
+  });
 
   if (!res.ok) {
     throw new Error("Failed to get ticket.");

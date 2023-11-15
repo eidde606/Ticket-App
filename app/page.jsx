@@ -2,23 +2,15 @@ import TicketCard from "./(components)/TicketCard";
 
 const getTickets = async () => {
   try {
-    console.log("Fetching tickets...");
-    const res = await fetch(
-      `https://api-ticket-54ababcdb63f.herokuapp.com/api/Tickets/${ticket._id}`,
-      {
-        cache: "no-store",
-      }
-    );
-
+    const res = await fetch(`${process.env.BASE_URL}`, {
+      cache: "no-store",
+    });
     if (!res.ok) {
       console.error(`Failed to fetch tickets. Status: ${res.status}`);
       throw new Error(`Failed to fetch tickets. Status: ${res.status}`);
     }
 
-    const data = await res.json();
-    console.log("Fetched tickets:", data);
-
-    return data;
+    return res.json();
   } catch (error) {
     console.error("Error fetching tickets:", error);
     return { tickets: [] };
@@ -28,9 +20,10 @@ const getTickets = async () => {
 const Dashboard = async () => {
   try {
     const data = await getTickets();
+    console.log("Fetched tickets:", data);
 
     // Ensure there are tickets
-    const tickets = data?.tickets || [];
+    const tickets = data.length ? data : data?.tickets || [];
 
     if (tickets.length === 0) {
       return <p>No tickets.</p>;
