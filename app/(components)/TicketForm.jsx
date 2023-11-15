@@ -32,11 +32,14 @@ const TicketForm = ({ ticket }) => {
         throw new Error("Failed to Update Ticket.");
       }
     } else {
-      const res = await fetch("/api/Tickets", {
-        method: "POST",
-        body: JSON.stringify({ formData }),
-        "Content-Type": "application/json",
-      });
+      const res = await fetch(
+        `https://api-ticket-54ababcdb63f.herokuapp.com/api/Tickets/${ticket._id}`,
+        {
+          method: "POST",
+          body: JSON.stringify({ formData }),
+          "Content-Type": "application/json",
+        }
+      );
       if (!res.ok) {
         throw new Error("Failed to create ticket.");
       }
