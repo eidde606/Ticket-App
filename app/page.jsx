@@ -4,7 +4,7 @@ const getTickets = async () => {
   try {
     console.log("Fetching tickets...");
     const res = await fetch(
-      "https://api-ticket-54ababcdb63f.herokuapp.com/api/Tickets/",
+      `https://api-ticket-54ababcdb63f.herokuapp.com/api/Tickets/${ticket._id}`,
       {
         cache: "no-store",
       }
