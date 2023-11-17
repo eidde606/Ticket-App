@@ -1,47 +1,10 @@
 "use client";
-
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const TicketForm = ({ ticket }) => {
-  const EDITMODE = ticket._id === "new" ? false : true;
+  const EDITMODE = ticket.id === "new" ? false : true;
   const router = useRouter();
-
-  const handleChange = (e) => {
-    const value = e.target.value;
-    const name = e.target.name;
-
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (EDITMODE) {
-      const res = await fetch(`${process.env.BASE_URL}${ticket._id}`, {
-        method: "PUT",
-        body: JSON.stringify({ formData }),
-        "Content-Type": "application/json",
-      });
-      if (!res.ok) {
-        throw new Error("Failed to Update Ticket.");
-      }
-    } else {
-      const res = await fetch(`${process.env.BASE_URL}${ticket._id}`, {
-        method: "POST",
-        body: JSON.stringify({ formData }),
-        "Content-Type": "application/json",
-      });
-      if (!res.ok) {
-        throw new Error("Failed to create ticket.");
-      }
-    }
-    router.refresh();
-    router.push("/");
-  };
-
   const startingTicketData = {
     title: "",
     description: "",
@@ -61,15 +24,63 @@ const TicketForm = ({ ticket }) => {
   }
 
   const [formData, setFormData] = useState(startingTicketData);
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    const name = e.target.name;
+
+    setFormData((preState) => ({
+      ...preState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (EDITMODE) {
+      const res = await fetch(`${process.env.BASE_URL}${ticket._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ formData }),
+      });
+      if (!res.ok) {
+        throw new Error("Failed to update ticket");
+      }
+    } else {
+      const res = await fetch("/api/Tickets", {
+        method: "POST",
+        body: JSON.stringify({ formData }),
+        //@ts-ignore
+        "Content-Type": "application/json",
+      });
+      if (!res.ok) {
+        throw new Error("Failed to create ticket");
+      }
+    }
+
+    router.refresh();
+    router.push("/");
+  };
+
+  const categories = [
+    "Hardware Problem",
+    "Software Problem",
+    "Application Deveopment",
+    "Project",
+  ];
+
   return (
-    <div className="flex justify-center">
+    <div className=" flex justify-center">
       <form
-        className="flex flex-col gap-3 w-1/2"
-        method="post"
         onSubmit={handleSubmit}
+        method="post"
+        className="flex flex-col gap-3 w-1/2"
       >
-        <h3>{EDITMODE ? "Update your ticket" : "Create Your Ticket"}</h3>
-        <label htmlFor="">Title</label>
+        <h3>{EDITMODE ? "Update Your Ticket" : "Create New Ticket"}</h3>
+        <label>Title</label>
         <input
           id="title"
           name="title"
@@ -87,18 +98,20 @@ const TicketForm = ({ ticket }) => {
           value={formData.description}
           rows="5"
         />
-
-        <label htmlFor="">Category</label>
+        <label>Category</label>
         <select
           name="category"
           value={formData.category}
           onChange={handleChange}
         >
-          <option value="Hardware Problem">Hardware Problem</option>
-          <option value="Software Problem">Software Problem</option>
-          <option value="Project">Project Problem</option>
+          {categories?.map((category, _index) => (
+            <option key={_index} value={category}>
+              {category}
+            </option>
+          ))}
         </select>
-        <label htmlFor="">Priority</label>
+
+        <label>Priority</label>
         <div>
           <input
             id="priority-1"
@@ -108,7 +121,7 @@ const TicketForm = ({ ticket }) => {
             value={1}
             checked={formData.priority == 1}
           />
-          <label htmlFor="">1</label>
+          <label>1</label>
           <input
             id="priority-2"
             name="priority"
@@ -117,7 +130,7 @@ const TicketForm = ({ ticket }) => {
             value={2}
             checked={formData.priority == 2}
           />
-          <label htmlFor="">2</label>
+          <label>2</label>
           <input
             id="priority-3"
             name="priority"
@@ -126,7 +139,7 @@ const TicketForm = ({ ticket }) => {
             value={3}
             checked={formData.priority == 3}
           />
-          <label htmlFor="">3</label>
+          <label>3</label>
           <input
             id="priority-4"
             name="priority"
@@ -135,7 +148,7 @@ const TicketForm = ({ ticket }) => {
             value={4}
             checked={formData.priority == 4}
           />
-          <label htmlFor="">4</label>
+          <label>4</label>
           <input
             id="priority-5"
             name="priority"
@@ -144,9 +157,9 @@ const TicketForm = ({ ticket }) => {
             value={5}
             checked={formData.priority == 5}
           />
-          <label htmlFor="">5</label>
+          <label>5</label>
         </div>
-        <label htmlFor="">Progress</label>
+        <label>Progress</label>
         <input
           type="range"
           id="progress"

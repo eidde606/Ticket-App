@@ -6,19 +6,23 @@ import { useRouter } from "next/navigation";
 
 const DeleteBlock = ({ id }) => {
   const router = useRouter();
-  const deleteTicket = async () => {
-    const res = await fetch(`${process.env.BASE_URL}${id}`, {
-      method: "DELETE",
-    });
 
+  const deleteTicket = async () => {
+    const res = await fetch(
+      `https://api-ticket-54ababcdb63f.herokuapp.com/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
     if (res.ok) {
       router.refresh();
     }
   };
+
   return (
     <FontAwesomeIcon
       icon={faX}
-      className="text-red-400 hover:cursor-pointer hover:text-red-200"
+      className=" text-red-400 hover:cursor-pointer hover:text-red-200"
       onClick={deleteTicket}
     />
   );
