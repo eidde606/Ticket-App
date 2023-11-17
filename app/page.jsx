@@ -4,6 +4,7 @@ const getTickets = async () => {
   try {
     const res = await fetch(`${process.env.BASE_URL}`, {
       cache: "no-store",
+      mode: "cors",
     });
     if (!res.ok) {
       console.error(`Failed to fetch tickets. Status: ${res.status}`);
