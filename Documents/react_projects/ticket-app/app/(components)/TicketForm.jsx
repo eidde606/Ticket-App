@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const TicketForm = ({ ticket }) => {
-  const EDITMODE = ticket._id === "new" ? false : true;
+  const EDITMODE = ticket.id === "new" ? false : true;
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -20,7 +20,7 @@ const TicketForm = ({ ticket }) => {
     e.preventDefault();
 
     if (EDITMODE) {
-      const res = await fetch(`/api/Tickets/${ticket._id}`, {
+      const res = await fetch(`/api/Tickets/${ticket.id}`, {
         method: "PUT",
         body: JSON.stringify({ formData }),
         "content-type": "application/json",

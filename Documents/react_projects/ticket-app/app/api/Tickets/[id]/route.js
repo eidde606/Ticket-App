@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET(req, { params }) {
   const { id } = params;
 
-  const foundTicket = await Ticket.findOne({ _id: id });
+  const foundTicket = await Ticket.findOne({ id: id });
   return NextResponse.json({ foundTicket }, { status: 200 });
 }
 

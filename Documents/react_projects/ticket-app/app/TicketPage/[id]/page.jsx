@@ -22,7 +22,7 @@ const TicketPage = async ({ params }) => {
     updateTicketData = updateTicketData.foundTicket;
   } else {
     updateTicketData = {
-      _id: "new",
+      id: "new",
     };
   }
   return <TicketForm ticket={updateTicketData} />;
