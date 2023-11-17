@@ -7,12 +7,9 @@ import { useRouter } from "next/navigation";
 const DeleteBlock = ({ id }) => {
   const router = useRouter();
   const deleteTicket = async () => {
-    const res = await fetch(
-      `https://api-ticket-54ababcdb63f.herokuapp.com/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
+    const res = await fetch(`${process.env.BASE_URL}/${id}`, {
+      method: "DELETE",
+    });
 
     if (res.ok) {
       router.refresh();
