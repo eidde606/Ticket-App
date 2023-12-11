@@ -14,51 +14,45 @@ const TicketForm = ({ ticket }) => {
     category: "Hardware Problem",
   };
 
-  if (EDITMODE) {
-    startingTicketData["title"] = ticket.title;
-    startingTicketData["description"] = ticket.description;
-    startingTicketData["priority"] = ticket.priority;
-    startingTicketData["progress"] = ticket.progress;
-    startingTicketData["status"] = ticket.status;
-    startingTicketData["category"] = ticket.category;
-  }
-
-  const [formData, setFormData] = useState(startingTicketData);
+  const [formData, setFormData] = useState(
+    EDITMODE ? { ...startingTicketData, ...ticket } : startingTicketData
+  );
 
   const handleChange = (e) => {
     const value = e.target.value;
     const name = e.target.name;
 
-    setFormData((preState) => ({
-      ...preState,
+    setFormData((prevState) => ({
+      ...prevState,
       [name]: value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, _id) => {
     e.preventDefault();
 
-    if (EDITMODE) {
-      const res = await fetch(`${process.env.BASE_URL}${ticket._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ formData }),
-      });
-      if (!res.ok) {
-        throw new Error("Failed to update ticket");
-      }
-    } else {
-      const res = await fetch("/api/Tickets", {
-        method: "POST",
-        body: JSON.stringify({ formData }),
-        //@ts-ignore
+    console.log("Ticket:", ticket);
+
+    const endpoint = EDITMODE
+      ? `${process.env.BASE_URL}/${ticket._id}`
+      : "/api/Tickets";
+    console.log("Endpoint:", endpoint);
+
+    const method = EDITMODE ? "PUT" : "POST";
+
+    const res = await fetch(endpoint, {
+      method: method,
+      headers: {
         "Content-Type": "application/json",
-      });
-      if (!res.ok) {
-        throw new Error("Failed to create ticket");
-      }
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!res.ok) {
+      const errorMessage = EDITMODE
+        ? "Failed to update ticket"
+        : "Failed to create ticket";
+      throw new Error(errorMessage);
     }
 
     router.refresh();
