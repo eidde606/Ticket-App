@@ -1,15 +1,19 @@
 import TicketForm from "@/app/(components)/TicketForm";
 
-const getTicketById = async (id) => {
-  const res = await fetch(`${process.env.BASE_URL}${id}`, {
-    cache: "no-store",
-  });
+const getTicketById = async (_id) => {
+  try {
+    const res = await fetch(`${process.env.BASE_URL}/${_id}`, {
+      cache: "no-store",
+    });
 
-  if (!res.ok) {
-    throw new Error("Failed to get ticket.");
+    if (!res.ok) {
+      throw new Error(`Failed to get ticket. Status: ${res.status}`);
+    }
+
+    return res.json();
+  } catch (error) {
+    throw new Error(`Error fetching tickets: ${error.message}`);
   }
-
-  return res.json();
 };
 
 const TicketPage = async ({ params }) => {
