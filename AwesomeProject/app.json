@@ -2,7 +2,7 @@
   "expo": {
     "name": "LifeGoals",
     "slug": "lifegoals",
-    "description": "This app allows you to create a list of goals you wish to accomplish.",
+    "description": "This app allows you to create a list of goals you wish to accomplish",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/goals.png",
